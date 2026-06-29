@@ -2,7 +2,7 @@
 
 A Python-based firmware verification system that detects tampering and corruption using SHA-256 hashing and RSA-PSS digital signatures.
 
-## 
+## Overview
 
 Firmware Integrity Checker verifies that a firmware file is:
 - Unmodified.
