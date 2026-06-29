@@ -2,16 +2,13 @@ from pathlib import Path
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
 
-BASE = Path(__file__).resolve().parents[1]
-KEYS = BASE / "keys"
-KEYS.mkdir(exist_ok=True)
+def generate_keypair(private_path: str, public_path: str, passphrase: bytes):
+    private_path = Path(private_path)
+    public_path = Path(public_path)
 
-PRIVATE_PATH = KEYS / "private_key.pem"
-PUBLIC_PATH = KEYS / "public_key.pem"
-PASSPHRASE = b"change-this-passphrase"
+    private_path.parent.mkdir(parents=True, exist_ok=True)
+    public_path.parent.mkdir(parents=True, exist_ok=True)
 
-def generate_keypair(private_path=PRIVATE_PATH, public_path=PUBLIC_PATH, passphrase=PASSPHRASE):
-    print("[INFO] Generating RSA-3072 key pair...")
     private_key = rsa.generate_private_key(public_exponent=65537, key_size=3072)
 
     private_path.write_bytes(
@@ -29,8 +26,10 @@ def generate_keypair(private_path=PRIVATE_PATH, public_path=PUBLIC_PATH, passphr
         )
     )
 
-    print(f"[OK] Private key saved to: {private_path}")
-    print(f"[OK] Public key saved to:  {public_path}")
+    return str(private_path), str(public_path)
 
-if __name__ == "__main__":
-    generate_keypair()
+def load_private_key(private_key_bytes: bytes, passphrase: bytes):
+    return serialization.load_pem_private_key(private_key_bytes, password=passphrase)
+
+def load_public_key(public_key_bytes: bytes):
+    return serialization.load_pem_public_key(public_key_bytes)

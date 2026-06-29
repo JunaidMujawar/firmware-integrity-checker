@@ -1,7 +1,6 @@
 __pycache__/
-*.pyc
 .venv/
-.env
-keys/private_key.pem
-keys/attacker_private.pem
-*.log
+*.pyc
+data/keys/private_key.pem
+data/keys/attacker_private.pem
+data/signatures/
